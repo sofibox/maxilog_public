@@ -248,7 +248,7 @@ resolve() {
     local get_ip_lookup
     get_ip_lookup=$(getent hosts "${target}" | awk '{ print $1 ; exit }')
     if ipcalc -c -4 "${get_ip_lookup}" >/dev/null 2>&1; then
-      ip_lookup="${target}"
+      ip_lookup="${get_ip_lookup}"
     elif ipcalc -c -6 "${get_ip_lookup}" >/dev/null 2>&1; then
       ip_lookup=$(ipcalc -6 "${get_ip_lookup}" | awk '/^Full Address:/ { print $NF }')
     else
@@ -336,6 +336,8 @@ scan() {
   if [[ ${found_count} -eq 0 ]]; then
     info 0 "No records found for target ${TARGET} (${ip_lookup})"
   fi
+
+  echo "Done"
 
 }
 
