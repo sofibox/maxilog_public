@@ -1,0 +1,138 @@
+{
+  "log_list": [
+    {
+        "path": "/etc/csf/csf.deny",
+        "description": "CSF PERMANENT IP BAN LOCATION",
+        "category": "block",
+        "status": "active"
+
+    },
+    {
+        "path": "/var/lib/csf/csf.tempip",
+        "description": "CSF TEMPORARY IP BAN LOCATION",
+        "category": "block",
+        "status": "active"
+    },
+    {
+        "path": "/var/lib/csf/csf.tempban",
+        "description": "CSF TEMPORARY IP BAN LOCATION 2",
+        "category": "block",
+        "status": "active"
+    },
+    {
+        "path": "/var/log/lfd.log",
+        "description": "LFD LOG FILE",
+        "category": "block",
+        "status": "active"
+    },
+    {
+        "path": "/root/blocked_ips.txt",
+        "description": "DIRECTADMIN BLOCKED IP LOCATION",
+        "category": "block",
+        "status": "active"
+    },
+    {
+        "path": "/var/log/messages",
+        "description": "GENERAL SYSTEM MESSAGE LOG",
+        "category": "auth",
+        "status": "active"
+    },
+    {
+        "path": "/var/log/secure",
+        "description": "GENERAL SYSTEM SECURE LOG",
+        "category": "auth",
+        "status": "active"
+    },
+    {
+        "path": "/var/log/maillog",
+        "description": "GENERAL SYSTEM MAIL LOG",
+        "category": "auth",
+        "status": "active"
+    },
+    {
+        "path": "/var/log/nginx/modsec_audit.log",
+        "description": "MOD_SECURITY AUDIT LOG",
+        "category": "auth",
+        "status": "active"
+    },
+    {
+        "path": "/var/www/html/roundcube/logs/errors.log",
+        "description": "ROUNDCUBE ERROR LOG",
+        "category": "auth",
+        "status": "active"
+    },
+    {
+        "path": "/var/www/html/phpMyAdmin/log/auth.log",
+        "description": "PHPMYADMIN AUTH LOG",
+        "category": "auth",
+        "status": "active"
+    },
+    {
+        "path": "/var/log/httpd/access_log",
+        "description": "APACHE SERVER ACCESS LOG",
+        "category": "auth",
+        "status": "active"
+    },
+    {
+        "path": "/var/log/httpd/error_log",
+        "description": "APACHE SERVER ERROR LOG",
+        "category": "auth",
+        "status": "active"
+    },
+    {
+        "path": "/var/log/nginx/access_log",
+        "description": "NGINX SERVER ACCESS LOG",
+        "category": "auth",
+        "status": "active"
+    },
+    {
+        "path": "/var/log/nginx/error_log",
+        "description": "NGINX SERVER ERROR LOG",
+        "category": "auth",
+        "status": "active"
+    },
+    {
+        "path": "/var/log/exim/main/log",
+        "description": "EXIM MAIL MAIN LOG",
+        "category": "auth",
+        "status": "active"
+    },
+    {
+        "path": "/var/log/exim/rejectlog",
+        "description": "EXIM MAIL REJECT LOG",
+        "category": "auth",
+        "status": "active"
+    },
+    {
+        "path": "/var/log/exim/paniclog",
+        "description": "EXIM MAIL PANIC LOG",
+        "category": "panic",
+        "status": "active"
+    },
+    {
+        "path": "/var/log/directadmin/login.log",
+        "description": "DIRECTADMIN AUTH LOG",
+        "category": "auth",
+        "status": "active"
+
+    },
+    {
+        "path": "/var/log/directadmin/security.log",
+        "description": "DIRECTADMIN SECURITY LOG",
+        "category": "auth",
+        "status": "active"
+    },
+    {
+        "path": "/var/log/suricata/fast.log",
+        "description": "SURICATA FAST LOG",
+        "category": "auth",
+        "status": "active"
+    },
+    {
+        "path": "/var/log/suricata/http.log",
+        "description": "SURICATA HTTP LOG",
+        "category": "auth",
+        "status": "active"
+    }
+  ]
+}
