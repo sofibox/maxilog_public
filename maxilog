@@ -263,7 +263,7 @@ resolve() {
 # This is for checking or scanning IP / domain
 scan() {
 
-  local caller ip_lookup ipv4_lookup ip6_full_lookup ip6_semi_compress_lookup ip6_compress_lookup log_paths found_count
+  local caller ip_lookup ipv4_lookup ipv4_lookup_slash ipv6_full_lookup ipv6_full_lookup_slash ipv6_semi_compress_lookup ipv6_semi_compress_lookup_slash ipv6_compress_lookup ipv6_compress_lookup_slash log_paths found_count
 
   caller="${SCRIPT_NAME}->${FUNCNAME[0]}"
   found_count=0
@@ -280,19 +280,21 @@ scan() {
   fi
 
   if ipcalc -c -4 "${ip_lookup}" >/dev/null 2>&1; then
-    ipv4_lookup="${ip_lookup//./\\.}"
+    ipv4_lookup="${ip_lookup}"
+    ipv4_lookup_slash="${ipv4_lookup//./\\.}"
     info 0 "Checking target ${TARGET} resolved to ${ipv4_lookup}"
+  elif ipcalc -c -6 "${ip_lookup}" >/dev/null 2>&1; then
+    ipv6_full_lookup="${ip_lookup}"
+    ipv6_full_lookup_slash="${ipv6_full_lookup//:/\\:}"
 
+    ipv6_semi_compress_lookup=$(echo "${ipv6_full_lookup}" | awk -F: 'BEGIN {OFS=":"} {for (i=1; i<=NF; i++) if ($i == "0000") {$i="0"}; gsub(/0{1,3}:/,"::"); print}')
+    ipv6_semi_compress_lookup_slash="${ipv6_semi_compress_lookup//:/\\:}"
+
+    ipv6_compress_lookup=$(ipcalc -6 "${ipv6_full_lookup}" | awk '/^Address:/ { print $NF }')
+    ipv6_compress_lookup_slash="${ipv6_compress_lookup//:/\\:}"
+    info 0 "Checking target ${TARGET} resolved to ${ipv6_full_lookup}, ${ipv6_semi_compress_lookup} and ${ipv6_compress_lookup}"
   else
-
-    ip6_full_lookup="${ip_lookup//:/\\:}"
-
-    ip6_semi_compress_lookup=$(echo "${ip_lookup}" | awk -F: 'BEGIN {OFS=":"} {for (i=1; i<=NF; i++) if ($i == "0000") {$i="0"}; gsub(/0{1,3}:/,"::"); print}')
-    ip6_semi_compress_lookup="${ip6_semi_compress_lookup//:/\\:}"
-
-    ip6_compress_lookup=$(ipcalc -6 "${ip_lookup}" | awk '/^Address:/ { print $NF }')
-    ip6_compress_lookup="${ip6_compress_lookup//:/\\:}"
-    info 0 "Checking target ${TARGET} resolved to ${ip6_full_lookup}, ${ip6_semi_compress_lookup} and ${ip6_compress_lookup}"
+    error "No valid IP found for ${TARGET}"
   fi
 
   # loop log_paths
@@ -311,9 +313,11 @@ scan() {
     fi
 
     if ipcalc -c -4 "${ip_lookup}" >/dev/null 2>&1; then
-      search_status=$(grep -E "(^|[^.0-9a-fA-F])${ip_lookup}([^.0-9a-fA^C]|$)|^${ip_lookup}$" "${log_path}")
+      search_status=$(grep -E "(^|[^.0-9a-fA-F])${ipv4_lookup_slash}([^.0-9a-fA^C]|$)|^${ipv4_lookup_slash}$" "${log_path}")
+    elif ipcalc -c -6 "${ip_lookup}" >/dev/null 2>&1; then
+      search_status=$(grep -E "(^|[^.0-9a-fA-F])${ipv6_full_lookup_slash}([^.0-9a-fA^C]|$)|^${ipv6_full_lookup_slash}$|(^|[^.0-9a-fA-F])${ipv6_semi_compress_lookup_slash}([^.0-9a-fA^C]|$)|^${ipv6_semi_compress_lookup_slash}$|(^|[^.0-9a-fA-F])${ipv6_compress_lookup_slash}([^.0-9a-fA^C]|$)|^${ipv6_compress_lookup_slash}$" "${log_path}")
     else
-      search_status=$(grep -E "(^|[^.0-9a-fA-F])${ip6_full_lookup}([^.0-9a-fA^C]|$)|^${ip6_full_lookup}$|(^|[^.0-9a-fA-F])${ip6_semi_compress_lookup}([^.0-9a-fA^C]|$)|^${ip6_semi_compress_lookup}$|(^|[^.0-9a-fA-F])${ip6_compress_lookup}([^.0-9a-fA^C]|$)|^${ip6_compress_lookup}$" "${log_path}")
+      search_status=""
     fi
 
     if [[ -n "${search_status}" ]]; then
